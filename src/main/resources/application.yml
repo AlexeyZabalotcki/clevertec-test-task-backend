@@ -1,0 +1,24 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: backend
+  datasource:
+    username: backend
+    password: backend_password
+    url: jdbc:postgresql://postgres:5432/backend
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+  flyway:
+    url: jdbc:postgresql://postgres:5432/backend
+    user: "backend"
+    password: "backend_password"
+    schemas: public
+    locations: classpath:db/migration
+
