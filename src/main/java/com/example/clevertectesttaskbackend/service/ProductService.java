@@ -41,20 +41,20 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public void getCheck(Long id, Integer quantity) throws NoSuchProductException {
+    public String getCheck(Long id, Integer quantity) throws NoSuchProductException {
         headOfCheck();
         if (productRepository.findById(id).isPresent()) {
             Product product = productRepository.findById(id).get();
             String title = product.getTitle();
             BigDecimal itemPrice = product.getPrice();
             BigDecimal totalPrice = calculatePrice(product, quantity);
-            System.out.printf("%s %7s %10s %6s\n", quantity, title, "$" + itemPrice, "$" + totalPrice);
+            return String.valueOf(System.out.printf("%s %7s %10s %6s\n", quantity, title, "$" + itemPrice, "$" + totalPrice));
         } else {
             throw new NoSuchProductException("There are no such id!!!\nCheck your input");
         }
     }
 
-    private BigDecimal calculatePrice(Product product, Integer quantity ) {
+    private BigDecimal calculatePrice(Product product, Integer quantity) {
         BigDecimal fullPrice;
         BigDecimal discount = BigDecimal.valueOf(0);
         BigDecimal finalPrice = BigDecimal.valueOf(0);

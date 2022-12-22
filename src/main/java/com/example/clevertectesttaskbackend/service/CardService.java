@@ -1,9 +1,7 @@
 package com.example.clevertectesttaskbackend.service;
 
 import com.example.clevertectesttaskbackend.model.DiscountCard;
-import com.example.clevertectesttaskbackend.model.Product;
 import com.example.clevertectesttaskbackend.repository.CardRepository;
-import com.example.clevertectesttaskbackend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
