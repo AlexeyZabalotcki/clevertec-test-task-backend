@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface CardRepository extends CrudRepository<DiscountCard, Long> {
     List<DiscountCard> findAll();
+
     DiscountCard findByNumber(Integer number);
 }
