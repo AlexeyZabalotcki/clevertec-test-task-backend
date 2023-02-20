@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/products")
@@ -50,7 +49,7 @@ public class ProductController {
     @GetMapping("/check")
     public ResponseEntity<String> printCheck(@RequestParam Long id, Integer quantity) {
         try {
-            productService.getCheck(id, quantity);
+//            productService.getCheck(id, quantity);
         } catch (NoSuchProductException ex) {
             ex.printStackTrace();
             return new ResponseEntity("id: " + id + " not found", HttpStatus.NOT_ACCEPTABLE);
@@ -64,9 +63,9 @@ public class ProductController {
 
         try {
             product = productService.findProductById(id);
-        } catch (NoSuchElementException ex) {
+        } catch (NoSuchProductException ex) {
             ex.printStackTrace();
-            return new ResponseEntity("id: " + id + " not found", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity("Check product id", HttpStatus.NOT_ACCEPTABLE);
         }
 
         return ResponseEntity.ok(product);
