@@ -8,6 +8,7 @@ ___
 # __To ```run``` application you need:__
 
 * open folder with project in the terminal ```cd 'your project folder'```
+* enter ```gradle build```
 * enter ```docker compose up -d --build```
 
 # __To ```stop``` application you need:__
