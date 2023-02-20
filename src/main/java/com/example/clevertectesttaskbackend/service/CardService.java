@@ -21,8 +21,8 @@ public class CardService {
         return cardRepository.save(card);
     }
 
-    public DiscountCard update(DiscountCard book) {
-        return cardRepository.save(book);
+    public DiscountCard update(DiscountCard card) {
+        return cardRepository.save(card);
     }
 
     public void deleteById(Long id) {
