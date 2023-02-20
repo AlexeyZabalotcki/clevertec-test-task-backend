@@ -1,7 +1,10 @@
 package com.example.clevertectesttaskbackend.exception;
 
-public class NoSuchProductException extends Exception {
+import java.util.NoSuchElementException;
+
+public class NoSuchProductException extends NoSuchElementException {
     public NoSuchProductException(String message) {
         super(message);
     }
+
 }
