@@ -15,17 +15,17 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public List<ProductDto> getAllProducts() {
+    public List<ProductDto> getAll() {
         List<Product> products = productRepository.findAll();
         return products.stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    public ProductDto findProductById(Long id) {
+    public ProductDto findById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new NoSuchProductException("Product not found"));
         return toDto(product);
     }
 
-    public ProductDto addProducts(ProductDto product) {
+    public ProductDto addProduct(ProductDto product) {
         Product entityProduct = productRepository.save(toEntity(product));
         return toDto(entityProduct);
     }

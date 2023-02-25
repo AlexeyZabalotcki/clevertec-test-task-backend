@@ -19,12 +19,12 @@ public class ProductController {
 
     @GetMapping("/all")
     public List<ProductDto> findAll() {
-        return productService.getAllProducts();
+        return productService.getAll();
     }
 
     @PostMapping("/add")
     public ResponseEntity<ProductDto> add(@RequestBody ProductDto product) {
-        return ResponseEntity.ok(productService.addProducts(product));
+        return ResponseEntity.ok(productService.addProduct(product));
     }
 
     @PutMapping("/update")
@@ -39,7 +39,7 @@ public class ProductController {
         ProductDto product;
 
         try {
-            product = productService.findProductById(id);
+            product = productService.findById(id);
         } catch (NoSuchProductException ex) {
             ex.printStackTrace();
             return new ResponseEntity("Check product id", HttpStatus.NOT_ACCEPTABLE);

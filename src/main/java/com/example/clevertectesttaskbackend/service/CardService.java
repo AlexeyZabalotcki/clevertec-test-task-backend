@@ -16,7 +16,7 @@ public class CardService {
     private final CardRepository cardRepository;
 
 
-    public List<DiscountCardDto> getAllCards() {
+    public List<DiscountCardDto> getAll() {
         List<DiscountCard> cards = cardRepository.findAll();
         return cards.stream().map(this::toDto).collect(Collectors.toList());
     }
@@ -31,7 +31,7 @@ public class CardService {
         return toDto(entityCard);
     }
 
-    public DiscountCardDto findCardById(Long id) {
+    public DiscountCardDto findById(Long id) {
         DiscountCard card = cardRepository.findById(id).orElseThrow(() -> new NoSuchCardException("Card not found"));
         return toDto(card);
     }

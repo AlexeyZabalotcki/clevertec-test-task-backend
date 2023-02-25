@@ -19,7 +19,7 @@ public class CardController {
 
     @GetMapping("/")
     public List<DiscountCardDto> getCards() {
-        return cardService.getAllCards();
+        return cardService.getAll();
     }
 
     @PostMapping("/add")
@@ -38,7 +38,7 @@ public class CardController {
         DiscountCardDto cardDto;
 
         try {
-            cardDto = cardService.findCardById(id);
+            cardDto = cardService.findById(id);
         } catch (NoSuchCardException ex) {
             ex.printStackTrace();
             return new ResponseEntity("Check card id", HttpStatus.NOT_ACCEPTABLE);
