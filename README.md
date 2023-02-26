@@ -78,4 +78,6 @@ ___Structure of the JSON in POST request to add a receipt:___
 }
 ```
 * You can add as many products as required.
-* Adding a discount card is optional, as it is used to get a discount on promotional products. 
+* Adding a discount card is optional, as it is used to get a discount on promotional products.
+* You can download the receipt in the Pdf format just paste ```http://localhost:8083/receipt/<receipt's id in the db>```
+in browser.
