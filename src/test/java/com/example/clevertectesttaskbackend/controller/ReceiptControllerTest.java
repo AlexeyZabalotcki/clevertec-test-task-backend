@@ -29,12 +29,12 @@ import static org.mockito.Mockito.*;
 class ReceiptControllerTest {
 
     @Mock
-    ReceiptService receiptService;
+    private ReceiptService receiptService;
 
     @InjectMocks
-    ReceiptController receiptController;
+    private ReceiptController receiptController;
 
-    ReceiptDto expected;
+    private ReceiptDto expected;
 
     @BeforeEach
     void setUp() {
