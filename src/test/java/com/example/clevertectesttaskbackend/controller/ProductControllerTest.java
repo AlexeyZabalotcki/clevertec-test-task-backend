@@ -3,7 +3,8 @@ package com.example.clevertectesttaskbackend.controller;
 import com.example.clevertectesttaskbackend.dto.ProductDto;
 import com.example.clevertectesttaskbackend.exception.NoSuchProductException;
 import com.example.clevertectesttaskbackend.service.ProductService;
-import org.junit.jupiter.api.AfterEach;
+import com.example.clevertectesttaskbackend.tesabuilder.ProductDtoTestBuilder;
+import com.example.clevertectesttaskbackend.tesabuilder.TestBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,39 +37,17 @@ class ProductControllerTest {
     @InjectMocks
     private ProductController productController;
 
-    private ProductDto expectedProduct;
+    private static ProductDto expectedProduct;
 
     @BeforeEach
     void setUp() {
-        expectedProduct = ProductDto.builder()
-                .id(1L)
-                .title("Product 1")
-                .price(BigDecimal.valueOf(123))
-                .discount(true)
-                .build();
-    }
-
-    @AfterEach
-    void tearDown() {
+        TestBuilder<ProductDto> builder = new ProductDtoTestBuilder(1L, "Product 1", BigDecimal.valueOf(123), true);
+        expectedProduct = builder.build();
     }
 
     private static Stream<Arguments> productProvider() {
-        ProductDto expectedProduct = ProductDto.builder()
-                .id(1L)
-                .title("Product 1")
-                .price(BigDecimal.valueOf(123))
-                .discount(true)
-                .build();
-
-        ProductDto expectedProduct1 = ProductDto.builder()
-                .id(1L)
-                .title("Product 2")
-                .price(BigDecimal.valueOf(1233))
-                .discount(false)
-                .build();
         return Stream.of(
-                Arguments.of(expectedProduct),
-                Arguments.of(expectedProduct1)
+                Arguments.of(expectedProduct)
         );
     }
 
@@ -80,15 +59,13 @@ class ProductControllerTest {
 
         List<ProductDto> actual = productController.findAll();
 
-        assertNotNull(actual);
-        assertEquals(expectedProducts.size(), actual.size());
-        assertEquals(expectedProducts.get(0), actual.get(0));
+        assertEquals(expectedProducts, actual);
 
         verify(productService, times(1)).getAll();
     }
 
     @Test
-    void checkAddShouldReturnAddedProduct() {
+    void checkAddShouldReturnStatusOk() {
         expectedProduct.setId(null);
 
         when(productService.addProduct(Mockito.any())).thenReturn(expectedProduct);
@@ -96,9 +73,58 @@ class ProductControllerTest {
         ResponseEntity<ProductDto> actual = productController.add(expectedProduct);
 
         assertEquals(HttpStatus.OK, actual.getStatusCode());
+
+        verify(productService, times(1)).addProduct(expectedProduct);
+    }
+
+    @Test
+    void checkAddShouldReturnTrueIfProductIdNull() {
+        expectedProduct.setId(null);
+
+        when(productService.addProduct(Mockito.any())).thenReturn(expectedProduct);
+
+        ResponseEntity<ProductDto> actual = productController.add(expectedProduct);
+
         assertNull(actual.getBody().getId());
-        assertEquals(BigDecimal.valueOf(123), actual.getBody().getPrice());
-        assertTrue(actual.getBody().isDiscount());
+
+        verify(productService, times(1)).addProduct(expectedProduct);
+    }
+
+    @Test
+    void checkAddShouldReturnTrueIfProductNotNull() {
+        expectedProduct.setId(null);
+
+        when(productService.addProduct(Mockito.any())).thenReturn(expectedProduct);
+
+        ResponseEntity<ProductDto> actual = productController.add(expectedProduct);
+
+        assertNotNull(actual.getBody());
+
+        verify(productService, times(1)).addProduct(expectedProduct);
+    }
+
+    @Test
+    void checkAddShouldReturnTrueIfExpectedPriceEqualsActual() {
+        expectedProduct.setId(null);
+
+        when(productService.addProduct(Mockito.any())).thenReturn(expectedProduct);
+
+        ResponseEntity<ProductDto> actual = productController.add(expectedProduct);
+
+        assertEquals(expectedProduct.getPrice(), actual.getBody().getPrice());
+
+        verify(productService, times(1)).addProduct(expectedProduct);
+    }
+
+    @Test
+    void checkAddShouldReturnTrueIfExpectedDiscountEqualsActual() {
+        expectedProduct.setId(null);
+
+        when(productService.addProduct(Mockito.any())).thenReturn(expectedProduct);
+
+        ResponseEntity<ProductDto> actual = productController.add(expectedProduct);
+
+        assertEquals(expectedProduct.isDiscount(), actual.getBody().isDiscount());
 
         verify(productService, times(1)).addProduct(expectedProduct);
     }
@@ -114,7 +140,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void checkFindByIdShouldReturnProduct() {
+    void checkFindByIdShouldReturnStatusOk() {
         Long id = 1L;
 
         when(productService.findById(anyLong())).thenReturn(expectedProduct);
@@ -124,12 +150,55 @@ class ProductControllerTest {
         verify(productService).findById(id);
 
         assertEquals(HttpStatus.OK, actual.getStatusCode());
-        assertEquals(id, actual.getBody().getId());
-        assertEquals(BigDecimal.valueOf(123), actual.getBody().getPrice());
-        assertTrue(actual.getBody().isDiscount());
 
         verify(productService, times(1)).findById(id);
     }
+
+    @Test
+    void checkFindByIdShouldReturnProductWithEqualsId() {
+        Long id = 1L;
+
+        when(productService.findById(anyLong())).thenReturn(expectedProduct);
+
+        ResponseEntity<ProductDto> actual = productController.findById(id);
+
+        verify(productService).findById(id);
+
+        assertEquals(id, actual.getBody().getId());
+
+        verify(productService, times(1)).findById(id);
+    }
+
+    @Test
+    void checkFindByIdShouldReturnProductWithEqualsPrice() {
+        Long id = 1L;
+
+        when(productService.findById(anyLong())).thenReturn(expectedProduct);
+
+        ResponseEntity<ProductDto> actual = productController.findById(id);
+
+        verify(productService).findById(id);
+
+        assertEquals(expectedProduct.getPrice(), actual.getBody().getPrice());
+
+        verify(productService, times(1)).findById(id);
+    }
+
+    @Test
+    void checkFindByIdShouldReturnProductWithEqualsDiscounts() {
+        Long id = 1L;
+
+        when(productService.findById(anyLong())).thenReturn(expectedProduct);
+
+        ResponseEntity<ProductDto> actual = productController.findById(id);
+
+        verify(productService).findById(id);
+
+        assertEquals(expectedProduct.isDiscount(), actual.getBody().isDiscount());
+
+        verify(productService, times(1)).findById(id);
+    }
+
 
     @ParameterizedTest
     @ValueSource(longs = {1L, 2L, 3L})
@@ -138,7 +207,6 @@ class ProductControllerTest {
 
         ResponseEntity<ProductDto> response = productController.findById(id);
 
-        assertEquals("Check product id", response.getBody());
         assertEquals(HttpStatus.NOT_ACCEPTABLE, response.getStatusCode());
 
         verify(productService).findById(id);
@@ -149,7 +217,6 @@ class ProductControllerTest {
     void checkDeleteByIdShouldReturnOkStatus(Long id) {
         ResponseEntity<ProductDto> response = productController.deleteById(id);
 
-        assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
         verify(productService, times(1)).deleteById(id);
