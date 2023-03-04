@@ -4,7 +4,9 @@ import com.example.clevertectesttaskbackend.dto.DiscountCardDto;
 import com.example.clevertectesttaskbackend.exception.NoSuchCardException;
 import com.example.clevertectesttaskbackend.model.DiscountCard;
 import com.example.clevertectesttaskbackend.repository.CardRepository;
-import org.junit.jupiter.api.AfterEach;
+import com.example.clevertectesttaskbackend.tesabuilder.CardDtoTestBuilder;
+import com.example.clevertectesttaskbackend.tesabuilder.CardTestBuilder;
+import com.example.clevertectesttaskbackend.tesabuilder.TestBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,26 +32,16 @@ class CardServiceTest {
     @Mock
     private CardRepository cardRepository;
 
-    private DiscountCardDto expectedDto;
-    private DiscountCard card;
+    private static DiscountCardDto expectedDto;
+    private static DiscountCard card;
 
     @BeforeEach
     void setUp() {
-        expectedDto = DiscountCardDto.builder()
-                .id(1L)
-                .number(123)
-                .discount(true)
-                .build();
+        TestBuilder<DiscountCardDto> cardDtoBuilder = new CardDtoTestBuilder(1L, 1234, true);
+        expectedDto = cardDtoBuilder.build();
 
-        card = DiscountCard.builder()
-                .id(1L)
-                .number(123)
-                .discount(true)
-                .build();
-    }
-
-    @AfterEach
-    void tearDown() {
+        TestBuilder<DiscountCard> cardBuilder = new CardTestBuilder(1L, 1234, true);
+        card = cardBuilder.build();
     }
 
     @Test

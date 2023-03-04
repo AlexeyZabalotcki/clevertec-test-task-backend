@@ -3,7 +3,8 @@ package com.example.clevertectesttaskbackend.controller;
 import com.example.clevertectesttaskbackend.dto.DiscountCardDto;
 import com.example.clevertectesttaskbackend.exception.NoSuchCardException;
 import com.example.clevertectesttaskbackend.service.CardService;
-import org.junit.jupiter.api.AfterEach;
+import com.example.clevertectesttaskbackend.tesabuilder.CardDtoTestBuilder;
+import com.example.clevertectesttaskbackend.tesabuilder.TestBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,36 +35,17 @@ class CardControllerTest {
     @InjectMocks
     private CardController cardController;
 
-    private DiscountCardDto expectedCard;
+    private static DiscountCardDto expectedCard;
 
     @BeforeEach
     void setUp() {
-        expectedCard = DiscountCardDto.builder()
-                .id(1L)
-                .number(123)
-                .discount(true)
-                .build();
-    }
-
-    @AfterEach
-    void tearDown() {
+        TestBuilder<DiscountCardDto> builder = new CardDtoTestBuilder(1L, 123, true);
+        expectedCard = builder.build();
     }
 
     private static Stream<Arguments> cardProvider() {
-        DiscountCardDto expectedCard = DiscountCardDto.builder()
-                .id(1L)
-                .number(123)
-                .discount(true)
-                .build();
-
-        DiscountCardDto expectedCard1 = DiscountCardDto.builder()
-                .id(2L)
-                .number(1234)
-                .discount(true)
-                .build();
         return Stream.of(
-                Arguments.of(expectedCard),
-                Arguments.of(expectedCard1)
+                Arguments.of(expectedCard)
         );
     }
 

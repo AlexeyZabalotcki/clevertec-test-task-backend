@@ -4,7 +4,9 @@ import com.example.clevertectesttaskbackend.dto.ProductDto;
 import com.example.clevertectesttaskbackend.exception.NoSuchProductException;
 import com.example.clevertectesttaskbackend.model.Product;
 import com.example.clevertectesttaskbackend.repository.ProductRepository;
-import org.junit.jupiter.api.AfterEach;
+import com.example.clevertectesttaskbackend.tesabuilder.ProductDtoTestBuilder;
+import com.example.clevertectesttaskbackend.tesabuilder.ProductTestBuilder;
+import com.example.clevertectesttaskbackend.tesabuilder.TestBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,34 +33,24 @@ class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
 
-    private ProductDto expectedDto;
-    private Product product;
+    private static ProductDto expectedDto;
+    private static Product product;
 
     @BeforeEach
     void setUp() {
-        expectedDto = ProductDto.builder()
-                .id(1L)
-                .title("Product 1")
-                .price(BigDecimal.valueOf(123))
-                .discount(true)
-                .build();
+        TestBuilder<ProductDto> productDtoBuilder =
+                new ProductDtoTestBuilder(1L, "Product 1", BigDecimal.valueOf(123), true);
+        expectedDto = productDtoBuilder.build();
 
-        product = Product.builder()
-                .id(1L)
-                .title("Product 1")
-                .price(BigDecimal.valueOf(123))
-                .discount(true)
-                .build();
-    }
-
-    @AfterEach
-    void tearDown() {
+        TestBuilder<Product> productBuilder =
+                new ProductTestBuilder(1L, "Product 1", BigDecimal.valueOf(123), true);
+        product = productBuilder.build();
     }
 
     @Test
     void checkGetAllShouldReturnAllProducts() {
-        List<ProductDto> expectedProductsDto = new ArrayList<>(Arrays.asList(expectedDto));
-        List<Product> expectedProducts = new ArrayList<>(Arrays.asList(product));
+        List<ProductDto> expectedProductsDto = new ArrayList<>(Collections.singletonList(expectedDto));
+        List<Product> expectedProducts = new ArrayList<>(Collections.singletonList(product));
 
         when(productRepository.findAll()).thenReturn(expectedProducts);
 

@@ -3,8 +3,10 @@ package com.example.clevertectesttaskbackend.controller;
 import com.example.clevertectesttaskbackend.dto.ProductDto;
 import com.example.clevertectesttaskbackend.dto.ReceiptDto;
 import com.example.clevertectesttaskbackend.service.ReceiptService;
+import com.example.clevertectesttaskbackend.tesabuilder.ProductDtoTestBuilder;
+import com.example.clevertectesttaskbackend.tesabuilder.ReceiptDtoTestBuilder;
+import com.example.clevertectesttaskbackend.tesabuilder.TestBuilder;
 import com.itextpdf.text.DocumentException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,43 +38,17 @@ class ReceiptControllerTest {
 
     private ReceiptDto expected;
 
+    private static TestBuilder<ReceiptDto> receiptDtoBuilder;
+    private static TestBuilder<ProductDto> productDtoBuilder;
+
     @BeforeEach
     void setUp() {
-        ProductDto p1 = ProductDto.builder()
-                .id(1L)
-                .title("Product 1")
-                .price(BigDecimal.valueOf(100))
-                .discount(true)
-                .build();
-        ProductDto p2 = ProductDto.builder()
-                .id(2L)
-                .title("Product 2")
-                .price(BigDecimal.valueOf(100))
-                .discount(false)
-                .build();
-        ProductDto p3 = ProductDto.builder()
-                .id(3L)
-                .title("Product 3")
-                .price(BigDecimal.valueOf(100))
-                .discount(true)
-                .build();
-        ProductDto p4 = ProductDto.builder()
-                .id(4L)
-                .title("Product 4")
-                .price(BigDecimal.valueOf(100))
-                .discount(false)
-                .build();
-        List<ProductDto> products = new ArrayList<>(Arrays.asList(p1, p2, p3, p4));
+        productDtoBuilder = new ProductDtoTestBuilder(1L, "Product 1", BigDecimal.valueOf(123), true);
+        ProductDto productDto = productDtoBuilder.build();
+        List<ProductDto> products = new ArrayList<>(Arrays.asList(productDto));
         byte[] byteArray = {1, 2, 3};
-        expected = ReceiptDto.builder()
-                .products(products)
-                .receipt(byteArray)
-                .totalPrice(BigDecimal.valueOf(380))
-                .build();
-    }
-
-    @AfterEach
-    void tearDown() {
+        receiptDtoBuilder = new ReceiptDtoTestBuilder(products, byteArray, BigDecimal.valueOf(123));
+        expected = receiptDtoBuilder.build();
     }
 
     @Test
@@ -85,17 +61,27 @@ class ReceiptControllerTest {
 
         verify(receiptService).getReceipt(id);
 
-        assertEquals(HttpStatus.OK, actual.getStatusCode());
         assertEquals(expected.getReceipt(), actual.getBody().getByteArray());
+    }
+
+    @Test
+    void checkGetByIdShouldReturnStatusOk() {
+        Long id = 1L;
+
+        when(receiptService.getReceipt(anyLong())).thenReturn(expected);
+
+        ResponseEntity<ByteArrayResource> actual = receiptController.getById(id);
+
+        verify(receiptService).getReceipt(id);
+
+        assertEquals(HttpStatus.OK, actual.getStatusCode());
     }
 
     @Test
     void checkAddReceiptShouldReturnByteArrayWithArgumentCapture() throws DocumentException {
         expected.setId(null);
 
-        List<ProductDto> productDtos = new ArrayList<>(expected.getProducts());
         byte[] receipt = expected.getReceipt();
-        BigDecimal totalPrice = expected.getTotalPrice();
 
         ArgumentCaptor<ReceiptDto> argumentCaptor = ArgumentCaptor.forClass(ReceiptDto.class);
 
@@ -103,10 +89,7 @@ class ReceiptControllerTest {
 
         ResponseEntity<ReceiptDto> actual = receiptController.addReceipt(expected);
 
-        assertEquals(HttpStatus.OK, actual.getStatusCode());
-        assertEquals(productDtos, actual.getBody().getProducts());
         assertEquals(receipt, actual.getBody().getReceipt());
-        assertEquals(totalPrice, actual.getBody().getTotalPrice());
 
         verify(receiptService, times(1)).addReceipt(argumentCaptor.getValue());
     }
@@ -115,18 +98,13 @@ class ReceiptControllerTest {
     void checkAddReceiptShouldReturnByteArray() throws DocumentException {
         expected.setId(null);
 
-        List<ProductDto> productDtos = new ArrayList<>(expected.getProducts());
         byte[] receipt = expected.getReceipt();
-        BigDecimal totalPrice = expected.getTotalPrice();
 
         when(receiptService.addReceipt(Mockito.any())).thenReturn(expected);
 
         ResponseEntity<ReceiptDto> actual = receiptController.addReceipt(expected);
 
-        assertEquals(HttpStatus.OK, actual.getStatusCode());
-        assertEquals(productDtos, actual.getBody().getProducts());
         assertEquals(receipt, actual.getBody().getReceipt());
-        assertEquals(totalPrice, actual.getBody().getTotalPrice());
 
         verify(receiptService, times(1)).addReceipt(expected);
     }

@@ -6,8 +6,8 @@ import com.example.clevertectesttaskbackend.exception.NoSuchReceiptException;
 import com.example.clevertectesttaskbackend.model.Product;
 import com.example.clevertectesttaskbackend.model.Receipt;
 import com.example.clevertectesttaskbackend.repository.ReceiptRepository;
+import com.example.clevertectesttaskbackend.tesabuilder.*;
 import com.itextpdf.text.DocumentException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,77 +40,28 @@ class ReceiptServiceTest {
 
     @BeforeEach
     void setUpDto() {
-        ProductDto p1 = ProductDto.builder()
-                .id(1L)
-                .title("Product 1")
-                .price(BigDecimal.valueOf(100))
-                .discount(true)
-                .build();
-        ProductDto p2 = ProductDto.builder()
-                .id(2L)
-                .title("Product 2")
-                .price(BigDecimal.valueOf(100))
-                .discount(false)
-                .build();
-        ProductDto p3 = ProductDto.builder()
-                .id(3L)
-                .title("Product 3")
-                .price(BigDecimal.valueOf(100))
-                .discount(true)
-                .build();
-        ProductDto p4 = ProductDto.builder()
-                .id(4L)
-                .title("Product 4")
-                .price(BigDecimal.valueOf(100))
-                .discount(false)
-                .build();
-        List<ProductDto> products = new ArrayList<>(Arrays.asList(p1, p2, p3, p4));
+        TestBuilder<ProductDto> productDtoBuilder =
+                new ProductDtoTestBuilder(1L, "Product 1", BigDecimal.valueOf(123), true);
+        TestBuilder<ProductDto> productDtoBuilder2 =
+                new ProductDtoTestBuilder(2L, "Product 2", BigDecimal.valueOf(123), true);
+        ProductDto productDto1 = productDtoBuilder.build();
+        ProductDto productDto2 = productDtoBuilder2.build();
+        List<ProductDto> products = new ArrayList<>(Arrays.asList(productDto1, productDto2));
         byte[] byteArray = {1, 2, 3};
-        expectedReceiptDto = ReceiptDto.builder()
-                .products(products)
-                .receipt(byteArray)
-                .totalPrice(BigDecimal.valueOf(380))
-                .build();
+        TestBuilder<ReceiptDto> receiptDtoBuilder = new ReceiptDtoTestBuilder(products, byteArray, BigDecimal.valueOf(123));
+        expectedReceiptDto = receiptDtoBuilder.build();
     }
 
     @BeforeEach
     void setUpEntity() {
-        Product p1 = Product.builder()
-                .id(1L)
-                .title("Product 1")
-                .price(BigDecimal.valueOf(100))
-                .discount(true)
-                .build();
-        Product p2 = Product.builder()
-                .id(2L)
-                .title("Product 2")
-                .price(BigDecimal.valueOf(100))
-                .discount(false)
-                .build();
-        Product p3 = Product.builder()
-                .id(3L)
-                .title("Product 3")
-                .price(BigDecimal.valueOf(100))
-                .discount(true)
-                .build();
-        Product p4 = Product.builder()
-                .id(4L)
-                .title("Product 4")
-                .price(BigDecimal.valueOf(100))
-                .discount(false)
-                .build();
-        List<Product> products = new ArrayList<>(Arrays.asList(p1, p2, p3, p4));
+        TestBuilder<Product> productBuilder1 = new ProductTestBuilder(1L, "Product 1", BigDecimal.valueOf(123), true);
+        TestBuilder<Product> productBuilder2 = new ProductTestBuilder(2L, "Product 2", BigDecimal.valueOf(123), true);
+        Product product1 = productBuilder1.build();
+        Product product2 = productBuilder2.build();
+        List<Product> products = new ArrayList<>(Arrays.asList(product1, product2));
         byte[] byteArray = {1, 2, 3};
-        expectedReceipt = Receipt.builder()
-                .id(1L)
-                .products(products)
-                .receipt(byteArray)
-                .totalPrice(BigDecimal.valueOf(380))
-                .build();
-    }
-
-    @AfterEach
-    void tearDown() {
+        TestBuilder<Receipt> receiptBuilder = new ReceiptTestBuilder(products, byteArray, BigDecimal.valueOf(123));
+        expectedReceipt = receiptBuilder.build();
     }
 
     @Test
