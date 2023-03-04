@@ -3,6 +3,7 @@ plugins {
 	id 'org.springframework.boot' version '3.0.0'
 	id 'io.spring.dependency-management' version '1.1.0'
 	id 'org.flywaydb.flyway' version "9.8.1"
+	id 'jacoco'
 }
 
 group = 'com.example'
@@ -20,13 +21,30 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'com.itextpdf:itextpdf:5.5.13'
 	implementation 'org.flywaydb:flyway-core:9.4.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jacoco {
+	toolVersion = "0.8.7"
+}
+
+tasks.withType(Test) {
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	reports {
+		html.enabled = true
+		xml.enabled = true
+		csv.enabled = false
+	}
 }
 
 tasks.named('test') {
