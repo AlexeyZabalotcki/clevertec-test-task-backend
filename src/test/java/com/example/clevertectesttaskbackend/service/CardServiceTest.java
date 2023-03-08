@@ -1,9 +1,9 @@
 package com.example.clevertectesttaskbackend.service;
 
+import com.example.clevertectesttaskbackend.dao.CardDao;
 import com.example.clevertectesttaskbackend.dto.DiscountCardDto;
+import com.example.clevertectesttaskbackend.entity.DiscountCard;
 import com.example.clevertectesttaskbackend.exception.NoSuchCardException;
-import com.example.clevertectesttaskbackend.model.DiscountCard;
-import com.example.clevertectesttaskbackend.repository.CardRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class CardServiceTest {
     private CardService cardService;
 
     @Mock
-    private CardRepository cardRepository;
+    private CardDao cardDao;
 
     private DiscountCardDto expectedDto;
     private DiscountCard card;
@@ -57,48 +57,48 @@ class CardServiceTest {
         List<DiscountCardDto> expectedCardsDto = new ArrayList<>(Arrays.asList(expectedDto));
         List<DiscountCard> expectedCards = new ArrayList<>(Arrays.asList(card));
 
-        when(cardRepository.findAll()).thenReturn(expectedCards);
+        when(cardDao.findAll()).thenReturn(expectedCards);
 
         List<DiscountCardDto> actual = cardService.getAll();
 
         assertEquals(expectedCardsDto, actual);
 
-        verify(cardRepository, times(1)).findAll();
+        verify(cardDao, times(1)).findAll();
     }
 
     @Test
     void checkAddCardShouldAddCardAndReturnDiscountCardDto() {
-        when(cardRepository.save(any(DiscountCard.class))).thenReturn(card);
+        when(cardDao.save(any(DiscountCard.class))).thenReturn(card);
 
         DiscountCardDto actual = cardService.addCard(expectedDto);
 
         assertEquals(expectedDto, actual);
 
-        verify(cardRepository, times(1)).save(card);
+        verify(cardDao, times(1)).save(card);
     }
 
     @Test
     void checkUpdateShouldUpdateCardAndReturnDiscountCardDto() {
-        when(cardRepository.save(any(DiscountCard.class))).thenReturn(card);
+        when(cardDao.save(any(DiscountCard.class))).thenReturn(card);
 
         DiscountCardDto actual = cardService.update(expectedDto);
 
         assertEquals(expectedDto, actual);
 
-        verify(cardRepository, times(1)).save(card);
+        verify(cardDao, times(1)).save(card);
     }
 
     @Test
     void checkFindByIdShouldReturnDiscountCardDto() {
         Long id = 1L;
 
-        when(cardRepository.findById(id)).thenReturn(Optional.of(card));
+        when(cardDao.findById(id)).thenReturn(Optional.of(card));
 
         DiscountCardDto actual = cardService.findById(id);
 
         assertEquals(expectedDto, actual);
 
-        verify(cardRepository, times(1)).findById(id);
+        verify(cardDao, times(1)).findById(id);
     }
 
     @Test
@@ -111,10 +111,10 @@ class CardServiceTest {
     @Test
     void checkDeleteByIdShouldDeleteCard() {
         Long id = 1L;
-        doNothing().when(cardRepository).deleteById(id);
+        doNothing().when(cardDao).deleteById(id);
 
         cardService.deleteById(id);
 
-        verify(cardRepository, times(1)).deleteById(id);
+        verify(cardDao, times(1)).deleteById(id);
     }
 }

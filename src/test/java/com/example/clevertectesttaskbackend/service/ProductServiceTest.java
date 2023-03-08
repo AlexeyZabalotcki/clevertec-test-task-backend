@@ -1,9 +1,9 @@
 package com.example.clevertectesttaskbackend.service;
 
+import com.example.clevertectesttaskbackend.dao.ProductDao;
 import com.example.clevertectesttaskbackend.dto.ProductDto;
+import com.example.clevertectesttaskbackend.entity.Product;
 import com.example.clevertectesttaskbackend.exception.NoSuchProductException;
-import com.example.clevertectesttaskbackend.model.Product;
-import com.example.clevertectesttaskbackend.repository.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class ProductServiceTest {
     private ProductService productService;
 
     @Mock
-    private ProductRepository productRepository;
+    private ProductDao productDao;
 
     private ProductDto expectedDto;
     private Product product;
@@ -60,26 +60,26 @@ class ProductServiceTest {
         List<ProductDto> expectedProductsDto = new ArrayList<>(Arrays.asList(expectedDto));
         List<Product> expectedProducts = new ArrayList<>(Arrays.asList(product));
 
-        when(productRepository.findAll()).thenReturn(expectedProducts);
+        when(productDao.findAll()).thenReturn(expectedProducts);
 
         List<ProductDto> actual = productService.getAll();
 
         assertEquals(expectedProductsDto, actual);
 
-        verify(productRepository, times(1)).findAll();
+        verify(productDao, times(1)).findAll();
     }
 
     @Test
     void checkFindByIdShouldReturnProductDto() {
         Long id = 1L;
 
-        when(productRepository.findById(id)).thenReturn(Optional.of(product));
+        when(productDao.findById(id)).thenReturn(Optional.of(product));
 
         ProductDto actual = productService.findById(id);
 
         assertEquals(expectedDto, actual);
 
-        verify(productRepository, times(1)).findById(id);
+        verify(productDao, times(1)).findById(id);
     }
 
     @Test
@@ -91,33 +91,33 @@ class ProductServiceTest {
 
     @Test
     void checkAddProductShouldAddProductAndReturnProductDto() {
-        when(productRepository.save(any(Product.class))).thenReturn(product);
+        when(productDao.save(any(Product.class))).thenReturn(product);
 
         ProductDto actual = productService.addProduct(expectedDto);
 
         assertEquals(expectedDto, actual);
 
-        verify(productRepository, times(1)).save(product);
+        verify(productDao, times(1)).save(product);
     }
 
     @Test
     void checkUpdateShouldUpdateProductAndReturnProductDto() {
-        when(productRepository.save(any(Product.class))).thenReturn(product);
+        when(productDao.save(any(Product.class))).thenReturn(product);
 
         ProductDto actual = productService.update(expectedDto);
 
         assertEquals(expectedDto, actual);
 
-        verify(productRepository, times(1)).save(product);
+        verify(productDao, times(1)).save(product);
     }
 
     @Test
     void checkDeleteByIdShouldDeleteProduct() {
         Long id = 1L;
-        doNothing().when(productRepository).deleteById(id);
+        doNothing().when(productDao).deleteById(id);
 
         productService.deleteById(id);
 
-        verify(productRepository, times(1)).deleteById(id);
+        verify(productDao, times(1)).deleteById(id);
     }
 }

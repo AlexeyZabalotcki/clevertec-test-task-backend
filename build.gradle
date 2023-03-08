@@ -1,9 +1,9 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.0.0'
-	id 'io.spring.dependency-management' version '1.1.0'
-	id 'org.flywaydb.flyway' version "9.8.1"
-	id 'jacoco'
+    id 'java'
+    id 'org.springframework.boot' version '3.0.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.flywaydb.flyway' version "9.8.1"
+    id 'jacoco'
 }
 
 group = 'com.example'
@@ -11,50 +11,59 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
-	annotationProcessor 'org.projectlombok:lombok'
-	implementation 'com.itextpdf:itextpdf:5.5.13'
-	implementation 'org.flywaydb:flyway-core:9.4.0'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    implementation 'com.sun.xml.bind:jaxb-impl:2.3.0.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.12.5'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'org.flywaydb:flyway-core'
+    runtimeOnly 'com.h2database:h2'
+    compileOnly 'org.projectlombok:lombok'
+//	runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'com.itextpdf:itextpdf:5.5.13'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 jacoco {
-	toolVersion = "0.8.7"
+    toolVersion = "0.8.7"
 }
 
 tasks.withType(Test) {
-	finalizedBy jacocoTestReport
+    finalizedBy jacocoTestReport
 }
 
 jacocoTestReport {
-	reports {
-		html.enabled = true
-		xml.enabled = true
-		csv.enabled = false
-	}
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 flyway {
-	url = 'jdbc:postgresql://postgres:5432/backend'
-	user = 'backend'
-	password = 'backend_password'
-	driver = 'org.postgresql.Driver'
-	locations = ['classpath:db/migration']
+    url = 'jdbc:postgresql://postgres:5432/backend'
+    user = 'backend'
+    password = 'backend_password'
+    driver = 'org.postgresql.Driver'
+    locations = ['classpath:db/migration']
 }

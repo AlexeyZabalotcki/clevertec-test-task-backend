@@ -29,6 +29,7 @@ ___Structure of the JSON in POST request to add a product:___
 ```
 {
         "title": <String product name>,
+        "producer": <producer>,
         "price": <BigDecimal price>,
         "discount": <boolean discount>
 }
@@ -45,39 +46,17 @@ ___Structure of the JSON in POST request to add a card:___
 ```
 {
         "number": <Integer number>,
+        "color": <color>,
+        "producer":<Producer>,
         "discount": <boolean discount>
 }
 ```
+__In this application default cache type is LRU, but it could change to LFU__
 
-__Work with receipts:__
-* For add receipt to the database you should go to ```http://localhost:8083/receipt/```
-* You can get receipt from the database using product's id ```http://localhost:8083/receipt/<receipt's id in the db>```
+* Both products and cards cached
+* Maximum cache capacity and cache type specified in the `application.yml` file
+* Cache type can be changed in `application.yml`  
 
-___Structure of the JSON in POST request to add a receipt:___ 
-```
-{
-   "products" :[ 
-    {
-       "id": <product id>,
-       "title": <String product title>,
-       "price": <BigDecimal price>,
-       "discount": <boolean discount>
-   },
-   {
-       "id": <product id>,
-       "title": <String product title>,
-       "price": <BigDecimal price>,
-       "discount": <boolean discount>
-   }
-   ],
-   "card": {
-       "id": <card id>,
-       "number": <Integer number>,
-       "discount": <boolean discount>
-   } 
-}
-```
-* You can add as many products as required.
-* Adding a discount card is optional, as it is used to get a discount on promotional products.
-* You can download the receipt in the Pdf format just paste ```http://localhost:8083/receipt/<receipt's id in the db>```
-in browser.
+__For getting information about maximum cache capacity and cahe size:__
+
+* GET request ```http://localhost:8083/cache/``` and you could get information in XML format

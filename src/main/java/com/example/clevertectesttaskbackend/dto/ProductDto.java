@@ -1,4 +1,4 @@
-package com.example.clevertectesttaskbackend.dto;
+package com.example.clevertectesttaskbackend.dto;//package com.example.clevertectesttaskbackend.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public class ProductDto {
     private Long id;
     private String title;
+    private String producer;
     private BigDecimal price;
     private boolean discount;
 }

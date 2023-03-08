@@ -1,4 +1,4 @@
-package com.example.clevertectesttaskbackend.dto;
+package com.example.clevertectesttaskbackend.dto;//package com.example.clevertectesttaskbackend.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,5 +8,7 @@ import lombok.Data;
 public class DiscountCardDto {
     private Long id;
     private Integer number;
+    private String color;
+    private String producer;
     private boolean discount;
 }

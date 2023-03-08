@@ -3,6 +3,7 @@ package com.example.clevertectesttaskbackend.controller;
 import com.example.clevertectesttaskbackend.dto.DiscountCardDto;
 import com.example.clevertectesttaskbackend.exception.NoSuchCardException;
 import com.example.clevertectesttaskbackend.service.CardService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,12 @@ public class CardController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<DiscountCardDto> add(@RequestBody DiscountCardDto card) {
+    public ResponseEntity<DiscountCardDto> add(@RequestBody @Valid DiscountCardDto card) {
         return ResponseEntity.ok(cardService.addCard(card));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<DiscountCardDto> update(@RequestBody DiscountCardDto cardDto) {
+    public ResponseEntity<DiscountCardDto> update(@RequestBody @Valid DiscountCardDto cardDto) {
         cardService.update(cardDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

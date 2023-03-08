@@ -1,10 +1,12 @@
-package com.example.clevertectesttaskbackend.model;
+package com.example.clevertectesttaskbackend.entity;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,18 +15,13 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "receipts")
+@Table(name = "RECEIPT")
 public class Receipt {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @ManyToMany(mappedBy = "receipts")
+    @Pattern(regexp = "^[A-Za-z]+$", message = "Info should contains only letters")
+    private String info;
     private List<Product> products;
-    @Column(name = "receipt")
-    @Lob
     private byte[] receipt;
-    @Column(name = "total_price")
     private BigDecimal totalPrice;
 }

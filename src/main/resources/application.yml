@@ -1,24 +1,19 @@
 server:
   port: 8083
 spring:
-  application:
-    name: backend
   datasource:
-    username: backend
-    password: backend_password
-    url: jdbc:postgresql://postgres:5432/backend
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
   flyway:
-    url: jdbc:postgresql://postgres:5432/backend
-    user: "backend"
-    password: "backend_password"
-    schemas: public
-    locations: classpath:db/migration
+    enabled: true
+    locations: classpath:/db/migration
+    baselineOnMigrate: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
+cache:
+  type: LRU
+  maxSize: 10

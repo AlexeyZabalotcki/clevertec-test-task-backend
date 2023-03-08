@@ -1,8 +1,9 @@
-package com.example.clevertectesttaskbackend.controller;
+package com.example.clevertectesttaskbackend.controller;//package com.example.clevertectesttaskbackend.controller;
 
 import com.example.clevertectesttaskbackend.dto.ProductDto;
 import com.example.clevertectesttaskbackend.exception.NoSuchProductException;
 import com.example.clevertectesttaskbackend.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,12 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ProductDto> add(@RequestBody ProductDto product) {
+    public ResponseEntity<ProductDto> add(@RequestBody @Valid ProductDto product) {
         return ResponseEntity.ok(productService.addProduct(product));
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ProductDto> update(@RequestBody ProductDto product) {
+    public ResponseEntity<ProductDto> update(@RequestBody @Valid ProductDto product) {
         productService.update(product);
 
         return new ResponseEntity(HttpStatus.OK);
