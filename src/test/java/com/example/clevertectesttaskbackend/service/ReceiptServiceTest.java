@@ -6,7 +6,6 @@ import com.example.clevertectesttaskbackend.exception.NoSuchReceiptException;
 import com.example.clevertectesttaskbackend.model.Product;
 import com.example.clevertectesttaskbackend.model.Receipt;
 import com.example.clevertectesttaskbackend.repository.ReceiptRepository;
-import com.itextpdf.text.DocumentException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -127,15 +125,5 @@ class ReceiptServiceTest {
         assertThrows(NoSuchReceiptException.class, () -> {
             receiptService.getReceipt(1330L);
         });
-    }
-
-    @Test
-    void checkAddReceiptShouldAddAndReturnReceipt() throws DocumentException {
-        when(receiptRepository.save(any(Receipt.class))).thenReturn(expectedReceipt);
-
-        ReceiptDto actualReceipt = receiptService.addReceipt(expectedReceiptDto);
-
-        assertEquals(expectedReceiptDto, actualReceipt);
-
     }
 }

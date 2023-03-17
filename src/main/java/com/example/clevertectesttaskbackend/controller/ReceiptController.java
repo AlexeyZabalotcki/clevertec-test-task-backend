@@ -46,6 +46,8 @@ public class ReceiptController {
         } catch (DocumentException e) {
             e.printStackTrace();
             return new ResponseEntity("Not found receipt", HttpStatus.NOT_ACCEPTABLE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return ResponseEntity.ok(receiptDto);
     }

@@ -90,7 +90,7 @@ class ReceiptControllerTest {
     }
 
     @Test
-    void checkAddReceiptShouldReturnByteArrayWithArgumentCapture() throws DocumentException {
+    void checkAddReceiptShouldReturnByteArrayWithArgumentCapture() throws Exception {
         expected.setId(null);
 
         List<ProductDto> productDtos = new ArrayList<>(expected.getProducts());
@@ -112,7 +112,7 @@ class ReceiptControllerTest {
     }
 
     @Test
-    void checkAddReceiptShouldReturnByteArray() throws DocumentException {
+    void checkAddReceiptShouldReturnByteArray() throws Exception {
         expected.setId(null);
 
         List<ProductDto> productDtos = new ArrayList<>(expected.getProducts());
@@ -132,7 +132,7 @@ class ReceiptControllerTest {
     }
 
     @Test
-    void checkAddReceiptShouldReturnException() throws DocumentException {
+    void checkAddReceiptShouldReturnException() throws Exception {
         expected.setReceipt(null);
         doThrow(new DocumentException()).when(receiptService).addReceipt(expected);
 
