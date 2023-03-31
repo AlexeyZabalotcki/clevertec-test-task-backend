@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
+
     private final ProductRepository productRepository;
 
     public List<ProductDto> getAll() {
@@ -56,5 +57,4 @@ public class ProductService {
                 .discount(product.isDiscount())
                 .build();
     }
-
 }

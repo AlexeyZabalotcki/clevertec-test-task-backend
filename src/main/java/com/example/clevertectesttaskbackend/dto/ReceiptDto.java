@@ -14,5 +14,4 @@ public class ReceiptDto {
     private byte[] receipt;
     private DiscountCardDto card;
     private BigDecimal totalPrice;
-
 }
