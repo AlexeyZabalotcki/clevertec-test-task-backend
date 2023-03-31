@@ -4,7 +4,11 @@ import com.example.clevertectesttaskbackend.dto.ProductDto;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,15 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class PdfUtils {
+
+    private final String HEADER = "CASH RECEIPT";
+    private final String SHOP = "SUPERMARKET 123";
+    private final String ADDRESS = "12, MILKWAY Galaxy / Earth";
+    private final String TEL = "Tel: 123-456-7890";
+    private final String CASHIER = "CASHIER: ";
+    private final String DATE = "DATE:";
+    private final String TOTAL_PRICE = "Total Price";
+
 
     static class BackgroundImage extends PdfPageEventHelper {
 
@@ -68,7 +81,7 @@ public class PdfUtils {
     private PdfPTable crateHeader() {
         PdfPTable tableHeader = new PdfPTable(1);
         tableHeader.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-        tableHeader.addCell("CASH RECEIPT");
+        tableHeader.addCell(HEADER);
         tableHeader.setWidthPercentage(50);
         return tableHeader;
     }
@@ -76,7 +89,7 @@ public class PdfUtils {
     private PdfPTable crateMallTitle() {
         PdfPTable tableMallTitle = new PdfPTable(1);
         tableMallTitle.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-        tableMallTitle.addCell("SUPERMARKET 123");
+        tableMallTitle.addCell(SHOP);
         tableMallTitle.setWidthPercentage(50);
         return tableMallTitle;
     }
@@ -84,7 +97,7 @@ public class PdfUtils {
     private PdfPTable crateAddress() {
         PdfPTable tableAddress = new PdfPTable(1);
         tableAddress.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-        tableAddress.addCell("12, MILKWAY Galaxy / Earth");
+        tableAddress.addCell(ADDRESS);
         tableAddress.setWidthPercentage(50);
         return tableAddress;
     }
@@ -92,7 +105,7 @@ public class PdfUtils {
     private PdfPTable cratePhoneNumber() {
         PdfPTable tablePhoneNumber = new PdfPTable(1);
         tablePhoneNumber.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-        tablePhoneNumber.addCell("Tel: 123-456-7890");
+        tablePhoneNumber.addCell(TEL);
         tablePhoneNumber.setWidthPercentage(50);
         return tablePhoneNumber;
     }
@@ -100,12 +113,12 @@ public class PdfUtils {
     private PdfPTable crateCashierDate() {
         PdfPTable tableCashierDate = new PdfPTable(3);
         tableCashierDate.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-        tableCashierDate.addCell("CASHIER: ");
+        tableCashierDate.addCell(CASHIER);
         int min = 1000;
         int max = 9999;
         Random random = new Random();
         tableCashierDate.addCell("№" + random.nextInt(max - min));
-        tableCashierDate.addCell("DATE:" + LocalDate.now());
+        tableCashierDate.addCell(DATE + LocalDate.now());
         return tableCashierDate;
     }
 
@@ -129,7 +142,7 @@ public class PdfUtils {
 
     private PdfPTable crateFooter(BigDecimal price) {
         PdfPTable tableForFooter = new PdfPTable(2);
-        tableForFooter.addCell("Total Price");
+        tableForFooter.addCell(TOTAL_PRICE);
         tableForFooter.addCell(String.valueOf(price));
         tableForFooter.setWidthPercentage(80);
         tableForFooter.setFooterRows(1);

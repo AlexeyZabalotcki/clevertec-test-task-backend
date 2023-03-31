@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,7 +24,9 @@ public class CalculateUtils {
         BigDecimal fullPriceTotal = getFullPriceTotal(dtos);
         BigDecimal taxes = getTax(totalDiscountedPrice);
 
-        return receipt.getCard() != null ? totalDiscountedPrice.add(taxes) : fullPriceTotal.add(taxes);
+        return Objects.nonNull(receipt.getCard())
+                ? totalDiscountedPrice.add(taxes)
+                : fullPriceTotal.add(taxes);
     }
 
     private BigDecimal getTax(BigDecimal priceWithoutDiscCard) {

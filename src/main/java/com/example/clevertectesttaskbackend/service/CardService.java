@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CardService {
-    private final CardRepository cardRepository;
 
+    private final CardRepository cardRepository;
 
     public List<DiscountCardDto> getAll() {
         List<DiscountCard> cards = cardRepository.findAll();
@@ -55,6 +55,4 @@ public class CardService {
                 .discount(card.isDiscount())
                 .build();
     }
-
-
 }
