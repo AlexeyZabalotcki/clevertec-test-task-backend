@@ -20,14 +20,9 @@ import java.util.LinkedHashMap;
 @Getter
 @PropertySource("classpath:application.yml")
 public class ProductLruCache implements Cache {
+
     private final LinkedHashMap<Product, Integer> cache;
     private final int capacity;
-
-    /**
-     * Constructs a new ProductLruCache object with the specified maximum size.
-     *
-     * @param capacity the maximum number of entries that the cache can hold inject from application.yml
-     */
 
     public ProductLruCache(@Value("${cache.maxSize}") int capacity) {
         this.cache = new LinkedHashMap<>(capacity, 0.75f, true);

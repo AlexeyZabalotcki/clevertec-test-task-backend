@@ -18,15 +18,10 @@ import java.util.*;
 @Component
 @PropertySource("classpath:application.yml")
 public class ProductLfuCache implements Cache {
-    private Map<Object, Product> cache;
-    private Map<Object, Integer> frequencies;
-    private int capacity;
 
-    /**
-     * Creates a new ProductLfuCache object with the specified maximum capacity.
-     *
-     * @param capacity the maximum number of products that can be stored in the cache
-     */
+    private final Map<Object, Product> cache;
+    private final Map<Object, Integer> frequencies;
+    private final int capacity;
 
     public ProductLfuCache(@Value("${cache.maxSize}") int capacity) {
         this.cache = new LinkedHashMap<>(capacity);

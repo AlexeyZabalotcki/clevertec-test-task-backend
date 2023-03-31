@@ -22,14 +22,10 @@ import java.util.List;
 @Getter
 @PropertySource("classpath:application.yml")
 public class CardLruCache implements Cache {
+
     private final LinkedHashMap<DiscountCard, Integer> cache;
     private final int capacity;
 
-    /**
-     * Constructs a new CardLruCache object with the specified maximum size.
-     *
-     * @param capacity the maximum number of entries that the cache can hold inject from application.yml
-     */
     public CardLruCache(@Value("${cache.maxSize}") int capacity) {
         this.capacity = capacity;
         this.cache = new LinkedHashMap<>(capacity, 0.75f, true);

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 @PropertySource("classpath:application.yml")
 @RequiredArgsConstructor
 public class CacheFactory {
+
     @Value("{cache.type}")
     private String cacheType;
 

@@ -18,15 +18,10 @@ import java.util.*;
 @Component
 @PropertySource("classpath:application.yml")
 public class CardLfuCache implements Cache {
+
     private final Map<Object, DiscountCard> cache;
     private final Map<Object, Integer> frequencies;
     private final int capacity;
-
-    /**
-     * Creates a new CardLfuCache object with the specified maximum capacity.
-     *
-     * @param capacity the maximum number of cards that can be stored in the cache
-     */
 
     public CardLfuCache(@Value("${cache.maxSize}") int capacity) {
         this.cache = new LinkedHashMap<>(capacity);
